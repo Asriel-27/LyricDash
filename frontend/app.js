@@ -307,6 +307,11 @@ function handlePlayerLeft(data) {
 function handleError(data) {
   console.error('Socket error:', data.message);
   alert(data.message);
+  
+  // Memaksa pengguna kembali ke halaman awal jika memori server hilang
+  if (data.message.includes('login ulang')) {
+    logout();
+  }
 }
 
 // ========== GAME FUNCTIONS ==========

@@ -185,6 +185,11 @@ io.on('connection', (socket) => {
     const userId = decoded.userId;
     const user = users[userId];
 
+    if (!user) {
+      socket.emit('error', { message: 'Sesi kedaluwarsa karena server restart. Silakan login ulang.' });
+      return; // Hentikan proses agar server tidak crash
+    }
+    
     socket.userId = userId;
     socket.username = user.username;
 
