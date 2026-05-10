@@ -152,11 +152,25 @@ function switchView(viewName) {
 function initializeApp() {
   // Hanya buat koneksi jika socket masih null
   if (!socket) {
-    socket = io(API_URL);
+    socket = io(API_URL, {
+      transports: ['websocket', 'polling'],
+      reconnection: true,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
+      reconnectionAttempts: 5,
+      auth: {
+        token: localStorage.getItem('token')
+      }
+    });
   }
 
   const token = localStorage.getItem('token');
-  socket.emit('user:join', { token });
+  
+  // Emit user:join dengan username
+  socket.emit('user:join', { 
+    token: token,
+    username: currentUser?.username || 'Guest'
+  });
 
   // Socket Event Listeners
   socket.off('connect').on('connect', () => {
