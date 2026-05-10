@@ -392,6 +392,18 @@ io.on('connection', (socket) => {
       accuracy: finalAccuracy,
       score: player.score
     });
+    
+    const leaderboard = room.players
+      .sort((a, b) => b.score - a.score)
+      .map((p, index) => ({
+        rank: index + 1,
+        username: p.username,
+        score: p.score,
+        wpm: p.wpm,
+        accuracy: p.accuracy
+      }));
+
+    io.to(roomId).emit('game:leaderboard', leaderboard);
   });
 
   // Get leaderboard
