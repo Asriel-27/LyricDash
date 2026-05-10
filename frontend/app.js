@@ -260,7 +260,12 @@ function handleGameStarted(data) {
   
   // Set audio
   const audio = document.getElementById('game-audio');
-  audio.src = data.song.audio;
+  // Memastikan audio diambil dari server Railway jika bentuknya bukan link eksternal
+  if (data.song.audio.startsWith('http')) {
+    audio.src = data.song.audio;
+  } else {
+    audio.src = API_URL + (data.song.audio.startsWith('/') ? '' : '/') + data.song.audio;
+  }
   
   // Show game area, hide waiting room
   document.getElementById('waiting-room').classList.add('hidden');
