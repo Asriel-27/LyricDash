@@ -12,7 +12,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: ["http://localhost:3000", "https://lyricdash.vercel.app"],
+    origin: ["http://localhost:3000", "https://lyricdash.vercel.app", "http://127.0.0.1:5500", "http://localhost:5500"],
     methods: ["GET", "POST"],
     credentials: true
   }
@@ -20,7 +20,7 @@ const io = socketIo(server, {
 
 // Middleware
 app.use(cors({
-  origin: ["http://localhost:3000", "https://lyricdash.vercel.app"],
+  origin: ["http://localhost:3000", "https://lyricdash.vercel.app", "http://127.0.0.1:5500", "http://localhost:5500"],
   credentials: true
 }));
 app.use(express.json());
