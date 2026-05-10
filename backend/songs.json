@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Flower Flow",
+    "artist": "Dua Lipa",
+    "audio": "/audio/sample1.mp3",
+    "lyrics": "Flowers in bloom beneath the sun, dancing with the morning light, hearts of gold so bright and young, painting rainbows in the night, flowing like a gentle stream, chasing every fleeting dream, we will find our harmony, in this symphony of thee",
+    "duration": 120
+  },
+  {
+    "id": 2,
+    "title": "Digital Hearts",
+    "artist": "The Synthetics",
+    "audio": "/audio/sample2.mp3",
+    "lyrics": "In the glow of pixel light we dance across the screen, digital hearts beating strong within this circuit dream, ones and zeros tell our story electromagnetic soul, reaching through the fiber optic lines to make us whole, we are infinite in this space eternal digital grace",
+    "duration": 100
+  },
+  {
+    "id": 3,
+    "title": "Mountain Echo",
+    "artist": "Wilderness",
+    "audio": "/audio/sample3.mp3",
+    "lyrics": "Standing at the peak so high where eagles dare to fly, mountains echo with our cry beneath the endless sky, voices carry through the wind across the valleys deep and wide, nature sings her lullaby with us as her guide, we are small yet we are strong connected to the earth",
+    "duration": 110
+  }
+]

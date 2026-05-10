@@ -1,0 +1,32 @@
+{
+  "name": "lyricdash",
+  "version": "1.0.0",
+  "description": "Multiplayer Typing Game & Real-time Chatroom",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "cd backend && npm start",
+    "dev": "cd backend && npm run dev",
+    "install-all": "cd backend && npm install && cd ..",
+    "client": "echo 'Frontend is static HTML/CSS/JS served from backend'",
+    "test": "echo 'Tests coming soon'",
+    "lint": "echo 'Linting setup coming soon'"
+  },
+  "keywords": [
+    "typing-game",
+    "socket.io",
+    "realtime-chat",
+    "multiplayer",
+    "nodejs",
+    "express"
+  ],
+  "author": "Senior Fullstack JavaScript Developer",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/LyricDash.git"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  }
+}

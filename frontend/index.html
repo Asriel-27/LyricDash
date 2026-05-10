@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LyricDash - Multiplayer Typing Game & Chatroom</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Auth Container -->
+  <div id="auth-container" class="container auth-container active">
+    <div class="auth-box">
+      <h1>LyricDash</h1>
+      <p class="subtitle">Multiplayer Typing Game & Chatroom</p>
+
+      <!-- Login Form -->
+      <form id="login-form" class="auth-form">
+        <h2>Login</h2>
+        <input type="text" id="login-username" placeholder="Username" required>
+        <input type="password" id="login-password" placeholder="Password" required>
+        <button type="submit" class="btn btn-primary">Login</button>
+        <p class="toggle-text">Don't have account? <a href="#" onclick="toggleAuthForm()">Register</a></p>
+      </form>
+
+      <!-- Register Form -->
+      <form id="register-form" class="auth-form hidden">
+        <h2>Register</h2>
+        <input type="text" id="register-username" placeholder="Username" required>
+        <input type="password" id="register-password" placeholder="Password" required>
+        <input type="password" id="register-password-confirm" placeholder="Confirm Password" required>
+        <button type="submit" class="btn btn-primary">Register</button>
+        <p class="toggle-text">Already have account? <a href="#" onclick="toggleAuthForm()">Login</a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main App Container -->
+  <div id="app-container" class="container app-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <h1>LyricDash</h1>
+      </div>
+      <div class="header-right">
+        <span id="user-info">Welcome, <strong id="current-username"></strong></span>
+        <button class="btn btn-small" onclick="logout()">Logout</button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <h3>Online Players</h3>
+          <div id="online-users" class="users-list">
+            <p class="empty-state">No users online</p>
+          </div>
+        </div>
+        <div class="sidebar-section">
+          <h3>Navigation</h3>
+          <button class="nav-btn active" onclick="switchView('lobby')">Lobby</button>
+          <button class="nav-btn" onclick="switchView('game')">Game Rooms</button>
+        </div>
+      </aside>
+
+      <!-- Content Area -->
+      <div class="content-area">
+        <!-- Lobby View -->
+        <div id="lobby-view" class="view active">
+          <div class="lobby-grid">
+            <!-- Chat Section -->
+            <div class="chat-section">
+              <h2>Chat Room</h2>
+              <div id="chat-messages" class="chat-messages">
+                <p class="system-message">Welcome to LyricDash Chat!</p>
+              </div>
+              <form id="chat-form" class="chat-input-form">
+                <input type="text" id="chat-input" placeholder="Type a message..." required>
+                <button type="submit" class="btn btn-small">Send</button>
+              </form>
+            </div>
+
+            <!-- Game Setup Section -->
+            <div class="game-setup-section">
+              <h2>Start Game</h2>
+              <div class="game-setup-form">
+                <label for="room-id">Room ID:</label>
+                <input type="text" id="room-id" placeholder="Enter or auto-generate">
+                <button type="button" class="btn btn-small" onclick="generateRoomId()">Generate ID</button>
+
+                <label for="song-select">Select Song:</label>
+                <select id="song-select">
+                  <option value="">Loading songs...</option>
+                </select>
+
+                <button type="button" class="btn btn-primary" onclick="joinGameRoom()">Join Game Room</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Game View -->
+        <div id="game-view" class="view">
+          <!-- Waiting Room -->
+          <div id="waiting-room" class="game-section">
+            <h2>Game Room</h2>
+            <p>Room ID: <strong id="game-room-id">-</strong></p>
+            <div id="game-players" class="players-list">
+              <p class="empty-state">No players in room</p>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="startGame()">Start Game</button>
+            <button type="button" class="btn btn-secondary" onclick="leaveGameRoom()">Leave Room</button>
+          </div>
+
+          <!-- Game Playing Area -->
+          <div id="game-area" class="game-section hidden">
+            <div class="game-header">
+              <div>
+                <h2 id="song-title">-</h2>
+                <p id="song-artist">-</p>
+              </div>
+              <audio id="game-audio" controls style="width: 300px;">
+                <source src="" type="audio/mpeg">
+              </audio>
+            </div>
+
+            <div class="game-content">
+              <!-- Lyrics Display -->
+              <div class="lyrics-display">
+                <p id="lyrics-text">Loading...</p>
+              </div>
+
+              <!-- Typing Input -->
+              <textarea id="typing-input" class="typing-input" placeholder="Start typing here..." disabled></textarea>
+
+              <!-- Players Progress -->
+              <div class="players-progress">
+                <div id="progress-container"></div>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-secondary" onclick="finishGame()">Finish Game</button>
+          </div>
+
+          <!-- Leaderboard -->
+          <div id="leaderboard-area" class="game-section hidden">
+            <h2>Game Results</h2>
+            <table class="leaderboard-table">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Player</th>
+                  <th>WPM</th>
+                  <th>Accuracy</th>
+                  <th>Score</th>
+                </tr>
+              </thead>
+              <tbody id="leaderboard-body">
+                <tr>
+                  <td colspan="5" class="empty-state">No results</td>
+                </tr>
+              </tbody>
+            </table>
+            <button type="button" class="btn btn-primary" onclick="backToWaitingRoom()">Back to Lobby</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
