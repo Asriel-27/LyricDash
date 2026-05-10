@@ -145,8 +145,10 @@ function switchView(viewName) {
 
 // ========== SOCKET.IO INITIALIZATION ==========
 function initializeApp() {
-  // Connect socket (Sudah ditambahkan API_URL)
-  socket = io(API_URL);
+  // Hanya buat koneksi jika socket masih null
+  if (!socket) {
+    socket = io(API_URL);
+  }
 
   const token = localStorage.getItem('token');
   socket.emit('user:join', { token });
