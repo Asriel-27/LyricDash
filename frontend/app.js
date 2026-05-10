@@ -361,10 +361,13 @@ function startGame() {
     return;
   }
 
+  // Emit game start event - server will force all players to start
   socket.emit('game:start', {
     roomId: currentRoom.id,
     songId: parseInt(songId)
   });
+
+  console.log('Game start signal sent to server');
 }
 
 function leaveGameRoom() {
@@ -385,8 +388,12 @@ function leaveGameRoom() {
 
 function trackTypingProgress() {
   const typingInput = document.getElementById('typing-input');
-  const lyrics = document.getElementById('lyrics-text').textContent;
+  const lyricsDisplay = document.getElementById('lyrics-text');
+  const lyrics = lyricsDisplay.textContent;
   const currentText = typingInput.value;
+
+  // Update lyrics display with color coding
+  updateLyricsDisplay(lyrics, currentText);
 
   // Calculate progress
   const progress = Math.min((currentText.length / lyrics.length) * 100, 100);
@@ -415,6 +422,29 @@ function trackTypingProgress() {
       accuracy: accuracy
     });
   }
+}
+
+function updateLyricsDisplay(lyrics, typedText) {
+  const lyricsDisplay = document.getElementById('lyrics-text');
+  let highlightedHtml = '';
+
+  for (let i = 0; i < lyrics.length; i++) {
+    if (i < typedText.length) {
+      // Character has been typed
+      if (typedText[i] === lyrics[i]) {
+        // Correct character - green
+        highlightedHtml += `<span class="typed-char">${escapeHtml(lyrics[i])}</span>`;
+      } else {
+        // Wrong character - red
+        highlightedHtml += `<span class="wrong-char">${escapeHtml(lyrics[i])}</span>`;
+      }
+    } else {
+      // Character not yet typed
+      highlightedHtml += escapeHtml(lyrics[i]);
+    }
+  }
+
+  lyricsDisplay.innerHTML = highlightedHtml;
 }
 
 function updatePlayerProgress(data) {

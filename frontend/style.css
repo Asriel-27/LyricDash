@@ -34,7 +34,7 @@ body {
 
 /* ========== AUTH CONTAINER ========== */
 .auth-container {
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
@@ -441,6 +441,18 @@ body {
   font-size: 16px;
   line-height: 1.8;
   color: var(--text-primary);
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.typed-char {
+  color: var(--success-color);
+  font-weight: 600;
+}
+
+.wrong-char {
+  color: var(--danger-color);
+  font-weight: 600;
 }
 
 .typing-input {
