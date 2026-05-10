@@ -1,4 +1,7 @@
 // ========== GLOBAL STATE ==========
+// Taruh API_URL di bagian paling atas, di luar fungsi atau kurung apapun
+const API_URL = 'https://lyricdash2-q4gsgo8f.b4a.run';
+
 let socket = null;
 let currentUser = null;
 let currentRoom = null;
@@ -24,10 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
     showAuthContainer();
   }
 
-  // Auth Form Listeners
+  // Auth Form Listeners (Nama fungsi chat sudah diperbaiki)
   document.getElementById('login-form').addEventListener('submit', handleLogin);
   document.getElementById('register-form').addEventListener('submit', handleRegister);
-  document.getElementById('chat-form').addEventListener('submit', handleChatMessage);
+  document.getElementById('chat-form').addEventListener('submit', sendChatMessage); 
 });
 
 // ========== AUTH FUNCTIONS ==========
@@ -42,7 +45,8 @@ async function handleLogin(e) {
   const password = document.getElementById('login-password').value;
 
   try {
-    const response = await fetch('/api/auth/login', {
+    // URL sudah ditambahkan API_URL
+    const response = await fetch(API_URL + '/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })
@@ -79,7 +83,8 @@ async function handleRegister(e) {
   }
 
   try {
-    const response = await fetch('/api/auth/register', {
+    // URL sudah ditambahkan API_URL
+    const response = await fetch(API_URL + '/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })
@@ -140,8 +145,8 @@ function switchView(viewName) {
 
 // ========== SOCKET.IO INITIALIZATION ==========
 function initializeApp() {
-  // Connect socket
-  socket = io();
+  // Connect socket (Sudah ditambahkan API_URL)
+  socket = io(API_URL);
 
   const token = localStorage.getItem('token');
   socket.emit('user:join', { token });
@@ -295,7 +300,8 @@ function handleError(data) {
 // ========== GAME FUNCTIONS ==========
 async function loadSongs() {
   try {
-    const response = await fetch('/api/songs');
+    // URL sudah ditambahkan API_URL
+    const response = await fetch(API_URL + '/api/songs');
     songs = await response.json();
 
     const songSelect = document.getElementById('song-select');
@@ -490,7 +496,8 @@ function backToWaitingRoom() {
 }
 
 // ========== CHAT FUNCTIONS ==========
-function handleChatMessage(e) {
+// Nama fungsi sudah diubah agar tidak bertabrakan dengan fungsi yang di atas
+function sendChatMessage(e) {
   e.preventDefault();
   const input = document.getElementById('chat-input');
   const message = input.value.trim();
