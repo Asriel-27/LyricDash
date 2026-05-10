@@ -215,9 +215,9 @@ function handlePlayerJoined(data) {
   const playersList = document.getElementById('game-players');
   playersList.innerHTML = '';
 
-  // Show all room players (we need to track them)
-  if (currentRoom && currentRoom.players) {
-    currentRoom.players.forEach(player => {
+  // Gunakan data.allPlayers yang dikirim dari server
+  if (data.allPlayers) {
+    data.allPlayers.forEach(player => {
       const playerEl = document.createElement('div');
       playerEl.className = 'player-item';
       playerEl.innerHTML = `

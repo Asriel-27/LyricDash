@@ -269,6 +269,7 @@ io.on('connection', (socket) => {
     io.to(roomId).emit('game:player-joined', {
       roomId,
       player,
+      allPlayers: room.players, // Wajib ada agar UI app.js bisa menggambar ulang daftar
       totalPlayers: room.players.length
     });
 
