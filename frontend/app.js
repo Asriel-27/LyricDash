@@ -152,20 +152,20 @@ function initializeApp() {
   socket.emit('user:join', { token });
 
   // Socket Event Listeners
-  socket.on('connect', () => {
+  socket.off('connect').on('connect', () => {
     console.log('Connected to server');
   });
 
-  socket.on('users:list', handleUsersList);
-  socket.on('user:status-change', handleUserStatusChange);
-  socket.on('chat:message', handleChatMessage);
-  socket.on('game:player-joined', handlePlayerJoined);
-  socket.on('game:started', handleGameStarted);
-  socket.on('game:progress-update', handleProgressUpdate);
-  socket.on('game:player-finished', handlePlayerFinished);
-  socket.on('game:leaderboard', handleLeaderboard);
-  socket.on('game:player-left', handlePlayerLeft);
-  socket.on('error', handleError);
+  socket.off('users:list').on('users:list', handleUsersList);
+  socket.off('user:status-change').on('user:status-change', handleUserStatusChange);
+  socket.off('chat:message').on('chat:message', handleChatMessage);
+  socket.off('game:player-joined').on('game:player-joined', handlePlayerJoined);
+  socket.off('game:started').on('game:started', handleGameStarted);
+  socket.off('game:progress-update').on('game:progress-update', handleProgressUpdate);
+  socket.off('game:player-finished').on('game:player-finished', handlePlayerFinished);
+  socket.off('game:leaderboard').on('game:leaderboard', handleLeaderboard);
+  socket.off('game:player-left').on('game:player-left', handlePlayerLeft);
+  socket.off('error').on('error', handleError);
 
   // Load songs
   loadSongs();
