@@ -260,12 +260,8 @@ function handleGameStarted(data) {
   
   // Set audio
   const audio = document.getElementById('game-audio');
-  // Memastikan audio diambil dari server Railway jika bentuknya bukan link eksternal
-  if (data.song.audio.startsWith('http')) {
-    audio.src = data.song.audio;
-  } else {
-    audio.src = API_URL + (data.song.audio.startsWith('/') ? '' : '/') + data.song.audio;
-  }
+  const audioPath = data.song.audio.startsWith('/') ? data.song.audio.substring(1) : data.song.audio;
+  audio.src = audioPath;
   
   // Show game area, hide waiting room
   document.getElementById('waiting-room').classList.add('hidden');
@@ -471,21 +467,27 @@ function updateLyricsDisplay(lyrics, typedText) {
 
   for (let i = 0; i < lyrics.length; i++) {
     if (i < typedText.length) {
-      // Character has been typed
       if (typedText[i] === lyrics[i]) {
-        // Correct character - green
         highlightedHtml += `<span class="typed-char">${escapeHtml(lyrics[i])}</span>`;
       } else {
-        // Wrong character - red
         highlightedHtml += `<span class="wrong-char">${escapeHtml(lyrics[i])}</span>`;
       }
+    } else if (i === typedText.length) {
+      highlightedHtml += `<span class="active-char" id="current-target">${escapeHtml(lyrics[i])}</span>`;
     } else {
-      // Character not yet typed
       highlightedHtml += escapeHtml(lyrics[i]);
     }
   }
 
   lyricsDisplay.innerHTML = highlightedHtml;
+
+  const activeChar = document.getElementById('current-target');
+  if (activeChar) {
+    activeChar.scrollIntoView({ 
+      behavior: 'smooth', 
+      inline: 'center' 
+    });
+  }
 }
 
 function updatePlayerProgress(data) {

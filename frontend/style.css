@@ -417,7 +417,7 @@ body {
   border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 20px;
-  height: calc(100vh - 180px);
+  height: calc(100vh - 120px);
   display: flex;
   flex-direction: column;
 }
@@ -453,17 +453,20 @@ body {
 }
 
 .lyrics-display {
-  background-color: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  padding: 15px;
-  max-height: 150px;
-  overflow-y: auto;
-  font-size: 16px;
-  line-height: 1.8;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  white-space: nowrap; 
+  overflow-x: hidden; 
+  overflow-y: hidden;
+  scroll-behavior: smooth; 
+  font-size: 40px; 
   color: var(--text-primary);
-  word-wrap: break-word;
-  white-space: pre-wrap;
+}
+
+.active-char {
+  border-bottom: 3px solid var(--primary-color);
+  padding-bottom: 2px;
 }
 
 .typed-char {
@@ -477,14 +480,15 @@ body {
 }
 
 .typing-input {
-  flex: 1;
-  padding: 15px;
+  height: 120px;
+  flex-shrink: 0;
+  padding: 25px;
   background-color: var(--bg-tertiary);
   border: 2px solid var(--border-color);
   border-radius: 6px;
   color: var(--text-primary);
   font-family: 'Courier New', monospace;
-  font-size: 16px;
+  font-size: 30px; 
   resize: none;
   transition: border-color 0.3s;
 }
