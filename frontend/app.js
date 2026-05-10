@@ -1,6 +1,6 @@
 // ========== GLOBAL STATE ==========
 // Taruh API_URL di bagian paling atas, di luar fungsi atau kurung apapun
-const API_URL = 'https://lyricdash.up.railway.app/';
+const API_URL = 'https://lyricdash.up.railway.app';
 
 let socket = null;
 let currentUser = null;
