@@ -251,6 +251,7 @@ function handleGameStarted(data) {
 
   // Enable typing input and start tracking
   const typingInput = document.getElementById('typing-input');
+  typingInput.value = '';
   typingInput.disabled = false;
   typingInput.focus();
 
@@ -258,6 +259,8 @@ function handleGameStarted(data) {
   typingStats.initialText = '';
   typingStats.totalChars = data.song.lyrics.length;
 
+  // Remove any existing listeners first to prevent duplicates
+  typingInput.removeEventListener('input', trackTypingProgress);
   // Start tracking typing progress
   typingInput.addEventListener('input', trackTypingProgress);
 
@@ -382,6 +385,15 @@ function leaveGameRoom() {
   document.getElementById('waiting-room').classList.remove('hidden');
   document.getElementById('game-area').classList.add('hidden');
   document.getElementById('leaderboard-area').classList.add('hidden');
+
+  // Reset typing input and lyrics display
+  const typingInput = document.getElementById('typing-input');
+  typingInput.value = '';
+  typingInput.disabled = true;
+  typingInput.removeEventListener('input', trackTypingProgress);
+  document.getElementById('lyrics-text').textContent = 'Loading...';
+  document.getElementById('game-audio').pause();
+  document.getElementById('game-audio').currentTime = 0;
 
   // Switch back to lobby
   document.getElementById('game-view').classList.remove('active');
@@ -520,10 +532,19 @@ function backToWaitingRoom() {
   document.getElementById('waiting-room').classList.remove('hidden');
 
   // Reset form and input
-  document.getElementById('typing-input').value = '';
-  document.getElementById('typing-input').disabled = true;
+  const typingInput = document.getElementById('typing-input');
+  typingInput.value = '';
+  typingInput.disabled = true;
+  typingInput.removeEventListener('input', trackTypingProgress);
   document.getElementById('game-audio').pause();
   document.getElementById('game-audio').currentTime = 0;
+
+  // Reset lyrics display to plain text
+  if (currentGame && currentGame.song) {
+    document.getElementById('lyrics-text').textContent = currentGame.song.lyrics;
+  } else {
+    document.getElementById('lyrics-text').textContent = 'Loading...';
+  }
 
   // Reset progress display
   document.getElementById('progress-container').innerHTML = '';
