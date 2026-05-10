@@ -121,13 +121,18 @@ function logout() {
 
 // ========== UI FUNCTIONS ==========
 function showAuthContainer() {
-  document.getElementById('auth-container').style.display = 'block';
+  document.getElementById('auth-container').style.display = 'flex'; 
   document.getElementById('app-container').style.display = 'none';
+  document.getElementById('app-container').classList.remove('active');
 }
 
 function showAppContainer() {
-  document.getElementById('auth-container').style.display = 'none'; // Menghilangkan Login
-  document.getElementById('app-container').style.display = 'block'; // Memunculkan Game
+  document.getElementById('auth-container').style.display = 'none'; 
+  
+  const appContainer = document.getElementById('app-container');
+  appContainer.style.display = 'flex'; 
+  appContainer.classList.add('active'); 
+  
   if (currentUser) {
     document.getElementById('current-username').textContent = currentUser.username;
   }
