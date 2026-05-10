@@ -121,12 +121,14 @@ function logout() {
 
 // ========== UI FUNCTIONS ==========
 function showAuthContainer() {
-  document.getElementById('auth-container').classList.add('active');
   document.getElementById('app-container').classList.remove('active');
+  document.getElementById('auth-container').classList.add('active');
+  document.getElementById('auth-container').classList.remove('hidden');
 }
 
 function showAppContainer() {
   document.getElementById('auth-container').classList.remove('active');
+  document.getElementById('auth-container').classList.add('hidden');
   document.getElementById('app-container').classList.add('active');
   document.getElementById('current-username').textContent = currentUser.username;
 }
