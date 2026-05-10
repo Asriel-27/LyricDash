@@ -121,17 +121,15 @@ function logout() {
 
 // ========== UI FUNCTIONS ==========
 function showAuthContainer() {
-  document.getElementById('auth-container').style.display = 'flex'; 
-  document.getElementById('app-container').style.display = 'none';
+  document.getElementById('auth-container').classList.remove('hidden');
+  document.getElementById('auth-container').classList.add('active');
   document.getElementById('app-container').classList.remove('active');
 }
 
 function showAppContainer() {
-  document.getElementById('auth-container').style.display = 'none'; 
-  
-  const appContainer = document.getElementById('app-container');
-  appContainer.style.display = 'flex'; 
-  appContainer.classList.add('active'); 
+  document.getElementById('auth-container').classList.remove('active');
+  document.getElementById('auth-container').classList.add('hidden');
+  document.getElementById('app-container').classList.add('active');
   
   if (currentUser) {
     document.getElementById('current-username').textContent = currentUser.username;
@@ -154,11 +152,25 @@ function switchView(viewName) {
 function initializeApp() {
   // Hanya buat koneksi jika socket masih null
   if (!socket) {
-    socket = io(API_URL);
+    socket = io(API_URL, {
+      transports: ['websocket', 'polling'],
+      reconnection: true,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
+      reconnectionAttempts: 5,
+      auth: {
+        token: localStorage.getItem('token')
+      }
+    });
   }
 
   const token = localStorage.getItem('token');
-  socket.emit('user:join', { token });
+  
+  // Emit user:join dengan username
+  socket.emit('user:join', { 
+    token: token,
+    username: currentUser?.username || 'Guest'
+  });
 
   // Socket Event Listeners
   socket.off('connect').on('connect', () => {
