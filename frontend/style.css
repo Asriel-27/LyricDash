@@ -444,6 +444,61 @@ body {
   font-size: 14px;
 }
 
+/* ========== TIMER DISPLAY ========== */
+.game-timer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+}
+
+.timer-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  border-radius: 50%;
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
+  animation: pulse-timer 1s infinite;
+}
+
+.timer-display #timer-text {
+  font-size: 36px;
+  font-weight: bold;
+  color: white;
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.timer-display.warning {
+  background: linear-gradient(135deg, var(--warning-color), var(--danger-color));
+  box-shadow: 0 0 30px rgba(239, 68, 68, 0.5);
+}
+
+@keyframes pulse-timer {
+  0%, 100% {
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 50px rgba(99, 102, 241, 0.8);
+  }
+}
+
+@keyframes pulse-warning {
+  0%, 100% {
+    box-shadow: 0 0 30px rgba(239, 68, 68, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 50px rgba(239, 68, 68, 0.8);
+  }
+}
+
+.timer-display.warning {
+  animation: pulse-warning 0.5s infinite;
+}
+
 .game-content {
   flex: 1;
   display: flex;

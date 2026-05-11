@@ -1,5 +1,4 @@
 // ========== GLOBAL STATE ==========
-// Taruh API_URL di bagian paling atas, di luar fungsi atau kurung apapun
 const API_URL = 'https://lyricdash.up.railway.app';
 
 let socket = null;
@@ -14,6 +13,11 @@ let typingStats = {
   totalChars: 0,
   correctChars: 0
 };
+
+// Timer related variables
+let gameTimer = null;
+let timerInterval = null;
+let totalGameTime = 0;
 
 // ========== INITIALIZATION ==========
 document.addEventListener('DOMContentLoaded', () => {
@@ -282,10 +286,17 @@ function handleGameStarted(data) {
   // Start tracking typing progress
   typingInput.addEventListener('input', trackTypingProgress);
 
+  // Initialize timer based on song duration
+  totalGameTime = data.song.duration || 120; // Default 120 seconds if no duration
+  gameTimer = totalGameTime;
+  
+  // Start the timer countdown
+  startGameTimer();
+
   // Play audio
   audio.play();
   
-  console.log('Game started!');
+  console.log('Game started! Duration: ' + totalGameTime + ' seconds');
 }
 
 function handleProgressUpdate(data) {
@@ -399,6 +410,12 @@ function startGame() {
 }
 
 function leaveGameRoom() {
+  // Stop the timer
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+  
   if (currentRoom) {
     socket.emit('game:leave-room', { roomId: currentRoom.id });
     currentRoom = null;
@@ -514,7 +531,75 @@ function updatePlayerProgress(data) {
   `;
 }
 
+// ========== TIMER FUNCTIONS ==========
+function startGameTimer() {
+  // Clear any existing timer
+  if (timerInterval) {
+    clearInterval(timerInterval);
+  }
+  
+  // Update display immediately
+  updateTimerDisplay();
+  
+  // Start countdown
+  timerInterval = setInterval(() => {
+    gameTimer--;
+    updateTimerDisplay();
+    
+    // Check if timer has finished
+    if (gameTimer <= 0) {
+      clearInterval(timerInterval);
+      handleTimerTimeout();
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const timerElement = document.getElementById('timer-text');
+  const timerContainer = document.querySelector('.timer-display');
+  
+  if (!timerElement) return;
+  
+  // Convert seconds to MM:SS format
+  const minutes = Math.floor(gameTimer / 60);
+  const seconds = gameTimer % 60;
+  const timeString = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  
+  timerElement.textContent = timeString;
+  
+  // Add warning class when time is running out (last 10 seconds)
+  if (gameTimer <= 10 && gameTimer > 0) {
+    timerContainer.classList.add('warning');
+  } else if (gameTimer > 10) {
+    timerContainer.classList.remove('warning');
+  }
+}
+
+function handleTimerTimeout() {
+  // Stop the timer
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+  
+  // Pause audio
+  const audio = document.getElementById('game-audio');
+  audio.pause();
+  
+  // Show alert to user
+  alert('⏰ Waktu habis! Game berakhir dengan skor Anda saat ini.');
+  
+  // Automatically finish the game
+  finishGame();
+}
+
 function finishGame() {
+  // Stop the timer
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+  
   const typingInput = document.getElementById('typing-input');
   const lyrics = document.getElementById('lyrics-text').textContent;
   const currentText = typingInput.value;
@@ -556,6 +641,12 @@ function finishGame() {
 }
 
 function backToWaitingRoom() {
+  // Stop the timer
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+  
   // Reset game area
   document.getElementById('leaderboard-area').classList.add('hidden');
   document.getElementById('waiting-room').classList.remove('hidden');
