@@ -28,6 +28,7 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 
 // ========== DATA STORAGE (In-Memory) ==========
 // Format: { userId: { id, username, password (hashed), createdAt } }
+const usersFilePath = path.join(__dirname, 'users.json');
 let users = loadUsersFromFile();
 
 // Format: { userId: { userId, username, socket, status: 'online'/'offline' } }
@@ -45,7 +46,6 @@ const chatMessages = [];
 const JWT_SECRET = 'your-secret-key-change-this-in-production';
 
 // ========== UTILITY FUNCTIONS ==========
-const usersFilePath = path.join(__dirname, 'users.json');
 
 // Fungsi membaca file JSON
 function loadUsersFromFile() {
