@@ -584,13 +584,23 @@ function handleTimerTimeout() {
   
   // Pause audio
   const audio = document.getElementById('game-audio');
-  audio.pause();
+  if (audio) audio.pause();
   
-  // Show alert to user
-  alert('⏰ Waktu habis! Game berakhir dengan skor Anda saat ini.');
-  
-  // Automatically finish the game
-  finishGame();
+  // Tampilkan custom modal (menggantikan alert lama)
+  const modal = document.getElementById('timeout-modal');
+  if (modal) {
+    modal.classList.remove('hidden');
+  } else {
+    // Fallback/cadangan jika HTML modal belum terbaca
+    alert('⏰ Waktu habis! Game berakhir dengan skor Anda saat ini.');
+    finishGame();
+  }
+}
+
+// Fungsi baru untuk menutup modal saat tombol diklik
+function closeTimeoutModal() {
+  document.getElementById('timeout-modal').classList.add('hidden');
+  finishGame(); // Lanjutkan ke layar leaderboard setelah ditekan
 }
 
 function finishGame() {
