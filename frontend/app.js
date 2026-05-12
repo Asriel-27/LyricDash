@@ -384,6 +384,9 @@ function joinGameRoom() {
   document.getElementById('lobby-view').classList.remove('active');
   document.getElementById('game-room-id').textContent = roomId;
 
+  document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.nav-btn')[1].classList.add('active'); 
+
   console.log(`Joined room: ${roomId}`);
 }
 
@@ -438,6 +441,9 @@ function leaveGameRoom() {
   // Switch back to lobby
   document.getElementById('game-view').classList.remove('active');
   document.getElementById('lobby-view').classList.add('active');
+
+  document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.nav-btn')[0].classList.add('active');
 }
 
 function trackTypingProgress() {
