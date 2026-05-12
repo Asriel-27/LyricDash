@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 
 // ========== DATA STORAGE (In-Memory) ==========
 // Format: { userId: { id, username, password (hashed), createdAt } }
-const users = {};
+let users = loadUsersFromFile();
 
 // Format: { userId: { userId, username, socket, status: 'online'/'offline' } }
 const onlineUsers = {};
@@ -45,6 +45,31 @@ const chatMessages = [];
 const JWT_SECRET = 'your-secret-key-change-this-in-production';
 
 // ========== UTILITY FUNCTIONS ==========
+const usersFilePath = path.join(__dirname, 'users.json');
+
+// Fungsi membaca file JSON
+function loadUsersFromFile() {
+  if (fs.existsSync(usersFilePath)) {
+    try {
+      const data = fs.readFileSync(usersFilePath, 'utf-8');
+      return JSON.parse(data);
+    } catch (error) {
+      console.error("Gagal membaca users.json", error);
+      return {};
+    }
+  }
+  return {};
+}
+
+// Fungsi menyimpan ke file JSON
+function saveUsersToFile(usersData) {
+  try {
+    fs.writeFileSync(usersFilePath, JSON.stringify(usersData, null, 2));
+  } catch (error) {
+    console.error("Gagal menyimpan ke users.json", error);
+  }
+}
+
 function hashPassword(password) {
   return bcrypt.hashSync(password, 10);
 }
@@ -101,6 +126,8 @@ app.post('/api/auth/register', (req, res) => {
     return res.status(400).json({ error: 'Username dan password diperlukan' });
   }
 
+  users = loadUsersFromFile();
+
   if (Object.values(users).some(u => u.username === username)) {
     return res.status(400).json({ error: 'Username sudah terdaftar' });
   }
@@ -112,6 +139,9 @@ app.post('/api/auth/register', (req, res) => {
     password: hashPassword(password),
     createdAt: new Date()
   };
+
+  // Simpan ke file JSON permanen
+  saveUsersToFile(users);
 
   const token = generateToken(userId);
   res.status(201).json({
@@ -131,6 +161,9 @@ app.post('/api/auth/login', (req, res) => {
   if (!username || !password) {
     return res.status(400).json({ error: 'Username dan password diperlukan' });
   }
+
+  // Reload data terbaru sebelum mengecek login
+  users = loadUsersFromFile();
 
   const user = Object.values(users).find(u => u.username === username);
 
