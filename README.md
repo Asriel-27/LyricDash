@@ -268,8 +268,5 @@ socket.on('receive-message', { userId, message, timestamp })
   "lyrics": "Lirik lagu...",
   "duration": "Total Waktu..."
 }
----
 
-**Dibuat dengan ❤️ oleh Senior Fullstack JavaScript Developer**
-
-Happy Typing! 🎵✨
+### Happy Typing! 🎵✨
