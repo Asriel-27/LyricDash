@@ -65,7 +65,7 @@ Sebelum memulai, pastikan Anda sudah menginstall:
 
 ```bash
 # Menggunakan Git
-git clone https://github.com/yourusername/LyricDash.git
+git clone https://github.com/Asriel-27/LyricDash
 cd LyricDash
 
 # Atau download manual dan extract ke folder
@@ -264,31 +264,10 @@ socket.on('receive-message', { userId, message, timestamp })
   "id": "song-id",
   "title": "Song Title",
   "artist": "Artist Name",
+  "audio": "File Name",
   "lyrics": "Lirik lagu...",
-  "difficulty": "easy|medium|hard"
+  "duration": "Total Waktu..."
 }
-```
-
-## 🤝 Kontribusi
-
-Kami sangat menerima kontribusi! Untuk berkontribusi:
-
-1. Fork repository
-2. Buat branch baru (`git checkout -b feature/AmazingFeature`)
-3. Commit perubahan (`git commit -m 'Add some AmazingFeature'`)
-4. Push ke branch (`git push origin feature/AmazingFeature`)
-5. Buat Pull Request
-
-## 📄 Lisensi
-
-Project ini dilisensikan di bawah lisensi MIT. Lihat file [LICENSE](LICENSE) untuk detail lengkap.
-
-## 📧 Kontak & Support
-
-- 📧 Email: your-email@example.com
-- 🐛 Issues: [GitHub Issues](https://github.com/yourusername/LyricDash/issues)
-- 💬 Discussions: [GitHub Discussions](https://github.com/yourusername/LyricDash/discussions)
-
 ---
 
 **Dibuat dengan ❤️ oleh Senior Fullstack JavaScript Developer**
